@@ -21,7 +21,7 @@ func bugtrailCreate(w http.ResponseWriter, r *http.Request){
 
 func main(){
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", home)
+	mux.HandleFunc("/{$}", home)
 	mux.HandleFunc("/bugtrail/view", bugtrailView)
 	mux.HandleFunc("/bugtrail/create", bugtrailCreate)
 
