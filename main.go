@@ -31,9 +31,9 @@ func bugtrailCreate(w http.ResponseWriter, r *http.Request){
 
 func main(){
 	mux := http.NewServeMux()
-	mux.HandleFunc("/{$}", home)
-	mux.HandleFunc("/bugtrail/view/{id}", bugtrailView)
-	mux.HandleFunc("/bugtrail/create", bugtrailCreate)
+	mux.HandleFunc("GET /{$}", home)
+	mux.HandleFunc("GET /bugtrail/view/{id}", bugtrailView)
+	mux.HandleFunc("GET /bugtrail/create", bugtrailCreate)
 	
 
 	log.Print("starting server on :4000")
