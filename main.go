@@ -26,6 +26,7 @@ func bugtrailCreate(w http.ResponseWriter, r *http.Request){
 }
 
 func bugtrailCreatePost(w http.ResponseWriter, r *http.Request){
+	w.WriteHeader(201)
 	w.Write([]byte("Save a new bugtrail"))
 }
 
