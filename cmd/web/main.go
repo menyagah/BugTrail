@@ -20,14 +20,19 @@ func main(){
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
 		AddSource: true,
 	}))
+
+	app := &application{
+		logger: logger,
+	}
+
 	mux := http.NewServeMux()
 
 	fileServer := http.FileServer(http.Dir("./ui/static"))
 	mux.Handle("GET /static/", http.StripPrefix("/static", fileServer))
-	mux.HandleFunc("GET /{$}", home)
-	mux.HandleFunc("GET /bugtrail/view/{id}", bugtrailView)
-	mux.HandleFunc("GET /bugtrail/create", bugtrailCreate)
-	mux.HandleFunc("POST /bugtrail/create", bugtrailCreatePost)
+	mux.HandleFunc("GET /{$}", app.home)
+	mux.HandleFunc("GET /bugtrail/view/{id}", app.bugtrailView)
+	mux.HandleFunc("GET /bugtrail/create", app.bugtrailCreate)
+	mux.HandleFunc("POST /bugtrail/create", app.bugtrailCreatePost)
 	
 	logger.Info("starting server", slog.String("addr", *addr))
 
