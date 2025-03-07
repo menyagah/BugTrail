@@ -8,6 +8,10 @@ import (
 )
 
 
+type application struct {
+	logger *slog.Logger
+}
+
 func main(){
 
 	addr := flag.String("addr", ":4000", "HTTP network address")
