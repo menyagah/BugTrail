@@ -3,13 +3,12 @@ package main
 import (
 	"fmt"
 	"html/template"
-	"log"
 	"net/http"
 	"strconv"
 )
 
 
-func home(w http.ResponseWriter, r *http.Request){
+func (app *application)home(w http.ResponseWriter, r *http.Request){
 	w.Header().Add("Server", "Go")
 
 	files := []string{
@@ -19,7 +18,7 @@ func home(w http.ResponseWriter, r *http.Request){
 	}
 	ts, err := template.ParseFiles(files...)
 	if err != nil {
-		log.Print(err.Error())
+		app.logger.Error(err.Error(), "method", r.Method, "uri", r.URL.RequestURI())
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
@@ -27,12 +26,12 @@ func home(w http.ResponseWriter, r *http.Request){
 	err = ts.ExecuteTemplate(w, "base", nil)
 
 	if err != nil {
-		log.Print(err.Error())
+		app.logger.Error(err.Error(), "method", r.Method, "uri", r.URL.RequestURI())
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 	}
 }
 
-func bugtrailView(w http.ResponseWriter, r *http.Request){
+func (app *application) bugtrailView(w http.ResponseWriter, r *http.Request){
 	id, err := strconv.Atoi(r.PathValue("id"))
 	if err != nil || id < 1 {
 		http.NotFound(w, r)
@@ -43,11 +42,11 @@ func bugtrailView(w http.ResponseWriter, r *http.Request){
 	// w.Write([]byte(msg))
 }
 
-func bugtrailCreate(w http.ResponseWriter, r *http.Request){
+func (app *application)bugtrailCreate(w http.ResponseWriter, r *http.Request){
 	w.Write([]byte("This is the creation bit"))
 }
 
-func bugtrailCreatePost(w http.ResponseWriter, r *http.Request){
+func (app *application)bugtrailCreatePost(w http.ResponseWriter, r *http.Request){
 	w.WriteHeader(http.StatusCreated)
 	w.Write([]byte("Save a new bugtrail"))
 }
